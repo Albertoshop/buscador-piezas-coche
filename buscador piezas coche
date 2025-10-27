@@ -69,9 +69,47 @@
         // Importante: La base de datos de modelos y piezas
         // **AQUÍ ES DONDE DEBES AGREGAR TODOS TUS MODELOS Y PIEZAS**
         const CAR_DATABASE = {
-            // -- Modelos ya existentes --
+            
+            // -- Modelos ELÉCTRICOS (NUEVOS) --
+            "BYD Atto 3 (2022-Actual)": {
+                "Alfombrillas a Medida (TPE)": "Alfombrillas goma TPE BYD Atto 3",
+                "Protector de Pantalla Central": "Protector pantalla navegación BYD Atto 3",
+                "Filtro de Polen/Habitáculo": "Filtro habitáculo carbon BYD Atto 3"
+            },
+            "BYD Seal (2023-Actual)": {
+                "Parasol Retráctil Techo": "Parasol techo panoramico BYD Seal",
+                "Cable de Carga Tipo 2 (Monofásico)": "Cable de carga Tipo 2 7.4kW BYD Seal",
+                "Escobillas Limpiaparabrisas": "Escobillas limpiaparabrisas BYD Seal"
+            },
+            "BYD Dolphin (2023-Actual)": {
+                "Organizador de Maletero": "Organizador maletero coche BYD Dolphin",
+                "Embellecedores Interiores": "Accesorios interiores BYD Dolphin",
+                "Pastillas de Freno Delanteras": "Pastillas de freno delanteras BYD Dolphin"
+            },
+            "Ebro (Gama Eléctrica/Híbrida)": {
+                "Cable de Carga Tipo 2 (7m)": "Cable carga coche electrico Tipo 2 22kW para SUV",
+                "Cargador de Pared (Wallbox)": "Wallbox 7.4kW trifasico Ebro",
+                "Filtro de Aire de Cabina": "Filtro de habitáculo Ebro EV",
+                "Funda para Cargador Exterior": "Funda protectora cargador EV exterior"
+            },
+            "Tesla Model 3/Y (2017-Actual)": {
+                "Alfombrillas de Goma Premium": "Alfombrillas Tesla Model 3 TPE",
+                "Cable de Carga Tipo 2 (7m)": "Cable carga coche electrico Tipo 2 22kW",
+                "Filtro de Aire de Cabina HEPA": "Filtro de cabina HEPA Tesla Model Y"
+            },
+            "Volkswagen ID.4 (2020-Actual)": {
+                "Tapacubos de Rueda (Juego 4)": "Tapacubos Volkswagen ID.4 19 pulgadas",
+                "Cargador Portátil (Schuko)": "Cargador portatil coche electrico schuko 3.6kW",
+                "Escobillas Limpiaparabrisas": "Escobillas limpiaparabrisas VW ID.4"
+            },
+            "Hyundai Kona Eléctrico (2018-Actual)": {
+                "Protector de Pantalla Central": "Protector pantalla Hyundai Kona electrico",
+                "Filtro de Polen/Habitáculo": "Filtro aire Hyundai Kona electrico",
+                "Pastillas de Freno Traseras": "Pastillas freno traseras Hyundai Kona EV"
+            },
+
+            // -- Modelos de COMBUSTIÓN (Anteriores) --
             "Seat Ibiza (2017-2023)": {
-                // El valor (value) aquí es la frase de búsqueda que Amazon usará para encontrar el mejor producto
                 "Escobillas Limpiaparabrisas (Juego)": "Seat Ibiza 6F escobillas limpiaparabrisas",
                 "Aceite de Motor 5W30 (5 Litros)": "Aceite motor 5W30 VW 504 00 Seat Ibiza",
             },
@@ -87,8 +125,6 @@
             "Ford Focus (2019-Actual)": {
                 "Limpiaparabrisas (Juego)": "Escobillas limpiaparabrisas Ford Focus 2019"
             },
-            
-            // -- NUEVOS MODELOS AÑADIDOS --
             "Renault Clio IV (2012-2019)": {
                 "Filtro de Aire": "Filtro aire motor Renault Clio 4 1.5 dCi",
                 "Kit de Distribución": "Kit distribucion Renault Clio IV 1.2 16V",
