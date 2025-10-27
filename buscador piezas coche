@@ -48,7 +48,6 @@
                 <label for="car-part" class="block text-sm font-medium text-gray-700">Paso 2: Selecciona la Pieza a Buscar</label>
                 <select id="car-part" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-red-500 focus:border-red-500 shadow-sm transition duration-150 ease-in-out bg-gray-100 text-gray-500" disabled>
                     <option value="" disabled selected>Selecciona un modelo primero...</option>
-                </option>
                 </select>
             </div>
 
@@ -66,9 +65,13 @@
 
     <script>
         // === ZONA DE CONFIGURACIÓN Y DATOS ===
+        
+        // Tu ID de Afiliado de Amazon
+        const AFFILIATE_TAG = "dimetu-21"; 
 
-        // Importante: La base de datos de modelos y piezas
-        // **AQUÍ ES DONDE DEBES AGREGAR TODOS TUS MODELOS Y PIEZAS**
+        // ------------------------------------------------------------------
+        // ** INICIO DE LA BASE DE DATOS DE VEHÍCULOS (CAR_DATABASE) **
+        // ------------------------------------------------------------------
         const CAR_DATABASE = {
             
             // -- Modelos ELÉCTRICOS (NUEVOS) --
@@ -142,9 +145,10 @@
                 "Tapacubos (Juego de 4)": "Tapacubos 14 pulgadas Fiat 500"
             }
         };
+        // ------------------------------------------------------------------
+        // ** FIN DE LA BASE DE DATOS DE VEHÍCULOS **
+        // ------------------------------------------------------------------
 
-        // Tu ID de Afiliado de Amazon
-        const AFFILIATE_TAG = "dimetu-21"; 
 
         // === ELEMENTOS DEL DOM (Definidos aquí, asignados en initApp) ===
         let modelSelect, partSelect, searchButton, messageArea;
@@ -153,13 +157,11 @@
 
         /**
          * Muestra o esconde mensajes de usuario.
-         * Se define primero para que pueda usarse en initApp.
          * @param {boolean} show - Si se debe mostrar el mensaje.
          * @param {string} text - El contenido del mensaje.
          * @param {string} type - 'success', 'error' o 'info' para estilos.
          */
         function showMessage(show, text = '', type = 'info') {
-            // Se comprueba si messageArea ha sido asignado antes de usarlo.
             if (!messageArea) return; 
 
             messageArea.innerHTML = text;
