@@ -67,25 +67,31 @@
         // === ZONA DE CONFIGURACIÓN Y DATOS ===
 
         // Importante: La base de datos de modelos y piezas
-        // En una aplicación real, esto vendría de una base de datos externa.
+        // **AQUÍ ES DONDE DEBES AGREGAR TODOS TUS MODELOS Y PIEZAS**
         const CAR_DATABASE = {
+            // EJEMPLO 1 (Modelo de coche añadido por IA)
+            "Seat Ibiza (2017-2023)": {
+                // El valor (value) aquí es la frase de búsqueda que Amazon usará para encontrar el mejor producto
+                "Escobillas Limpiaparabrisas (Juego)": "Seat Ibiza 6F escobillas limpiaparabrisas",
+                "Aceite de Motor 5W30 (5 Litros)": "Aceite motor 5W30 VW 504 00 Seat Ibiza",
+            },
+            // EJEMPLO 2 (Modelo de coche del código anterior)
             "Toyota Corolla (2018-2023)": {
-                "Filtro de Aceite": "TOYOTACOROLLA-FILTROACEITE-REF123",
-                "Pastillas de Freno Delanteras": "TOYOTACOROLLA-FRENOS-REF456",
-                "Batería": "TOYOTACOROLLA-BATERIA-REF789"
+                "Filtro de Aceite": "Toyota Corolla filtro aceite 2020",
+                "Pastillas de Freno Delanteras": "Pastillas freno Toyota Corolla 2018",
+                "Batería": "Bateria coche AGM 70Ah Toyota Corolla"
             },
             "Volkswagen Golf VII (2012-2020)": {
-                "Bujías (Juego de 4)": "VWGOLF7-BUJIAS-REF111",
-                "Amortiguadores Traseros": "VWGOLF7-AMORTIGUADOR-REF222"
+                "Bujías (Juego de 4)": "Bujias NGK Volkswagen Golf VII",
+                "Amortiguadores Traseros": "Amortiguadores Bilstein Golf 7"
             },
             "Ford Focus (2019-Actual)": {
-                "Limpiaparabrisas (Juego)": "FORDFOCUS-LIMPIA-REF333"
+                "Limpiaparabrisas (Juego)": "Escobillas limpiaparabrisas Ford Focus 2019"
             }
         };
 
-        // Tu ID de Afiliado de Amazon
-        // RECUERDA: Este es un placeholder. Debes usar tu propio Tag ID de Amazon Afiliados.
-        const AFFILIATE_TAG = "tuiddeafiliado-20"; 
+        // Tu ID de Afiliado de Amazon - ¡ACTUALIZADO CON TU ID REAL!
+        const AFFILIATE_TAG = "dimetu-21"; 
 
         // === ELEMENTOS DEL DOM ===
         const modelSelect = document.getElementById('car-model');
@@ -127,7 +133,7 @@
                 // Rellenar el selector de Piezas
                 Object.keys(parts).forEach(partName => {
                     const option = document.createElement('option');
-                    option.value = parts[partName]; // Usamos la referencia como valor
+                    option.value = parts[partName]; // Usamos la referencia/búsqueda como valor
                     option.textContent = partName;
                     partSelect.appendChild(option);
                 });
@@ -159,7 +165,7 @@
         function showMessage(show, text = '', type = 'info') {
             messageArea.innerHTML = text;
             if (show) {
-                messageArea.classList.remove('hidden', 'bg-red-100', 'bg-green-100', 'text-red-700', 'text-green-700');
+                messageArea.classList.remove('hidden', 'bg-red-100', 'bg-green-100', 'text-red-700', 'text-green-700', 'bg-blue-100', 'text-blue-700');
                 if (type === 'error') {
                     messageArea.classList.add('bg-red-100', 'text-red-700');
                 } else if (type === 'success') {
@@ -174,42 +180,30 @@
 
         /**
          * Construye el enlace de afiliado y redirecciona.
-         * ESTA ES LA FUNCIÓN CLAVE PARA TU NEGOCIO.
          */
         function redirectToAmazon() {
-            const productReference = partSelect.value; // La referencia única de la pieza
+            // El valor de la pieza seleccionada es la frase de búsqueda precisa.
+            const productSearchQuery = partSelect.value; 
 
-            if (!productReference) {
+            if (!productSearchQuery) {
                 showMessage(true, 'Error: Selecciona el modelo y la pieza antes de buscar.', 'error');
                 return;
             }
 
-            // En un caso real, la referencia de la pieza (productReference)
-            // se usaría para buscar el ASIN (código de producto de Amazon)
-            // y construir la URL.
-            // Para esta demostración, simularemos la búsqueda por texto.
-
-            const selectedModelText = modelSelect.options[modelSelect.selectedIndex].text;
-            const selectedPartText = partSelect.options[partSelect.selectedIndex].text;
-            
-            // Construye la frase de búsqueda
-            const searchQuery = `${selectedPartText} ${selectedModelText}`;
-            
             // Construye el enlace de búsqueda de Amazon con tu Tag de Afiliado
-            const amazonUrl = `https://www.amazon.es/s?k=${encodeURIComponent(searchQuery)}&tag=${AFFILIATE_TAG}`;
+            // Utilizamos el endpoint de búsqueda (s?k=)
+            const amazonUrl = `https://www.amazon.es/s?k=${encodeURIComponent(productSearchQuery)}&tag=${AFFILIATE_TAG}`;
 
             // 1. Muestra un mensaje al usuario antes de redirigir (UX)
-            showMessage(true, `Redireccionando a Amazon para buscar: "${searchQuery}"...`, 'success');
+            showMessage(true, `Redireccionando a Amazon para buscar: "${productSearchQuery}"...`, 'success');
             
             // 2. Redirecciona al usuario
-            // Utiliza un pequeño retraso para que el usuario pueda leer el mensaje
             setTimeout(() => {
+                // Abre el enlace en una nueva pestaña
                 window.open(amazonUrl, '_blank');
-                // IMPORTANTE: En el entorno real de una app, puedes usar window.location.href = amazonUrl;
-                // Usamos window.open para evitar problemas de navegación en este entorno de demo.
                 
-                // Mensaje post-redirección (opcional)
-                showMessage(true, '¡Redirección completada! Revisa la nueva pestaña o ventana.', 'info');
+                // Mensaje post-redirección
+                showMessage(true, '¡Redirección completada! Revisa la nueva pestaña para ver los resultados de Amazon.', 'info');
             }, 800); 
 
             console.log("URL generada con afiliado:", amazonUrl);
