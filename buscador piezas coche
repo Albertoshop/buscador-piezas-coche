@@ -69,13 +69,12 @@
         // Importante: La base de datos de modelos y piezas
         // **AQUÍ ES DONDE DEBES AGREGAR TODOS TUS MODELOS Y PIEZAS**
         const CAR_DATABASE = {
-            // EJEMPLO 1 (Modelo de coche añadido por IA)
+            // -- Modelos ya existentes --
             "Seat Ibiza (2017-2023)": {
                 // El valor (value) aquí es la frase de búsqueda que Amazon usará para encontrar el mejor producto
                 "Escobillas Limpiaparabrisas (Juego)": "Seat Ibiza 6F escobillas limpiaparabrisas",
                 "Aceite de Motor 5W30 (5 Litros)": "Aceite motor 5W30 VW 504 00 Seat Ibiza",
             },
-            // EJEMPLO 2 (Modelo de coche del código anterior)
             "Toyota Corolla (2018-2023)": {
                 "Filtro de Aceite": "Toyota Corolla filtro aceite 2020",
                 "Pastillas de Freno Delanteras": "Pastillas freno Toyota Corolla 2018",
@@ -87,6 +86,23 @@
             },
             "Ford Focus (2019-Actual)": {
                 "Limpiaparabrisas (Juego)": "Escobillas limpiaparabrisas Ford Focus 2019"
+            },
+            
+            // -- NUEVOS MODELOS AÑADIDOS --
+            "Renault Clio IV (2012-2019)": {
+                "Filtro de Aire": "Filtro aire motor Renault Clio 4 1.5 dCi",
+                "Kit de Distribución": "Kit distribucion Renault Clio IV 1.2 16V",
+                "Bombillas H7": "Bombillas H7 homologadas Renault Clio 4"
+            },
+            "BMW Serie 3 E46 (1998-2006)": {
+                "Juego de Alfombrillas": "Alfombrillas BMW E46 a medida",
+                "Sensor de Posición del Cigüeñal": "Sensor cigueñal BMW E46 M54",
+                "Discos de Freno Delanteros": "Discos freno ventilados BMW E46"
+            },
+            "Fiat 500 (2007-Actual)": {
+                "Funda para Asientos": "Funda asientos Fiat 500 diseño",
+                "Filtro de Polen/Habitáculo": "Filtro habitaculo carbon activo Fiat 500",
+                "Tapacubos (Juego de 4)": "Tapacubos 14 pulgadas Fiat 500"
             }
         };
 
