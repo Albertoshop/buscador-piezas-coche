@@ -48,6 +48,7 @@
                 <label for="car-part" class="block text-sm font-medium text-gray-700">Paso 2: Selecciona la Pieza a Buscar</label>
                 <select id="car-part" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-red-500 focus:border-red-500 shadow-sm transition duration-150 ease-in-out bg-gray-100 text-gray-500" disabled>
                     <option value="" disabled selected>Selecciona un modelo primero...</option>
+                </option>
                 </select>
             </div>
 
@@ -142,16 +143,40 @@
             }
         };
 
-        // Tu ID de Afiliado de Amazon - ¡ACTUALIZADO CON TU ID REAL!
+        // Tu ID de Afiliado de Amazon
         const AFFILIATE_TAG = "dimetu-21"; 
 
-        // === ELEMENTOS DEL DOM ===
-        const modelSelect = document.getElementById('car-model');
-        const partSelect = document.getElementById('car-part');
-        const searchButton = document.getElementById('search-button');
-        const messageArea = document.getElementById('message-area');
+        // === ELEMENTOS DEL DOM (Definidos aquí, asignados en initApp) ===
+        let modelSelect, partSelect, searchButton, messageArea;
 
         // === FUNCIONES PRINCIPALES ===
+
+        /**
+         * Muestra o esconde mensajes de usuario.
+         * Se define primero para que pueda usarse en initApp.
+         * @param {boolean} show - Si se debe mostrar el mensaje.
+         * @param {string} text - El contenido del mensaje.
+         * @param {string} type - 'success', 'error' o 'info' para estilos.
+         */
+        function showMessage(show, text = '', type = 'info') {
+            // Se comprueba si messageArea ha sido asignado antes de usarlo.
+            if (!messageArea) return; 
+
+            messageArea.innerHTML = text;
+            if (show) {
+                messageArea.classList.remove('hidden', 'bg-red-100', 'bg-green-100', 'text-red-700', 'text-green-700', 'bg-blue-100', 'text-blue-700');
+                if (type === 'error') {
+                    messageArea.classList.add('bg-red-100', 'text-red-700');
+                } else if (type === 'success') {
+                    messageArea.classList.add('bg-green-100', 'text-green-700');
+                } else {
+                    messageArea.classList.add('bg-blue-100', 'text-blue-700');
+                }
+            } else {
+                messageArea.classList.add('hidden');
+            }
+        }
+
 
         /**
          * Inicializa los selectores con los datos de la base de datos.
@@ -209,28 +234,6 @@
         }
         
         /**
-         * Muestra o esconde mensajes de usuario.
-         * @param {boolean} show - Si se debe mostrar el mensaje.
-         * @param {string} text - El contenido del mensaje.
-         * @param {string} type - 'success' o 'error' para estilos.
-         */
-        function showMessage(show, text = '', type = 'info') {
-            messageArea.innerHTML = text;
-            if (show) {
-                messageArea.classList.remove('hidden', 'bg-red-100', 'bg-green-100', 'text-red-700', 'text-green-700', 'bg-blue-100', 'text-blue-700');
-                if (type === 'error') {
-                    messageArea.classList.add('bg-red-100', 'text-red-700');
-                } else if (type === 'success') {
-                    messageArea.classList.add('bg-green-100', 'text-green-700');
-                } else {
-                    messageArea.classList.add('bg-blue-100', 'text-blue-700');
-                }
-            } else {
-                messageArea.classList.add('hidden');
-            }
-        }
-
-        /**
          * Construye el enlace de afiliado y redirecciona.
          */
         function redirectToAmazon() {
@@ -262,18 +265,30 @@
         }
 
 
-        // === LISTENERS Y EJECUCIÓN INICIAL ===
+        /**
+         * Función principal de inicialización que se ejecuta cuando el DOM está listo.
+         */
+        function initApp() {
+            // 1. Asignar los elementos DOM (¡Garantiza que existen!)
+            modelSelect = document.getElementById('car-model');
+            partSelect = document.getElementById('car-part');
+            searchButton = document.getElementById('search-button');
+            messageArea = document.getElementById('message-area');
 
-        // Event Listeners
-        modelSelect.addEventListener('change', handleModelChange);
-        partSelect.addEventListener('change', handlePartChange);
-        searchButton.addEventListener('click', redirectToAmazon);
+            // 2. Inicializar los selectores
+            initializeSelectors();
 
-        // Inicializar la aplicación al cargar
-        document.addEventListener('DOMContentLoaded', initializeSelectors);
+            // 3. Establecer Event Listeners
+            modelSelect.addEventListener('change', handleModelChange);
+            partSelect.addEventListener('change', handlePartChange);
+            searchButton.addEventListener('click', redirectToAmazon);
 
-        // Mensaje de inicio para el usuario
-        showMessage(true, 'Bienvenido. Por favor, selecciona el modelo y la pieza para empezar.', 'info');
+            // 4. Mensaje de inicio para el usuario
+            showMessage(true, 'Bienvenido. Por favor, selecciona el modelo y la pieza para empezar.', 'info');
+        }
+
+        // === EJECUCIÓN INICIAL: Aseguramos que la función initApp se ejecuta solo cuando el DOM esté completamente cargado ===
+        document.addEventListener('DOMContentLoaded', initApp);
 
     </script>
 </body>
