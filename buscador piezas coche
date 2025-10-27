@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buscador de Piezas de Coche</title>
+    <!-- Incluye Tailwind CSS para un diseño moderno y responsive -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Estilos personalizados para la tipografía Inter */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f7f7; /* Fondo gris claro */
+        }
+        /* Estilo para el botón principal */
+        .primary-button {
+            transition: all 0.2s;
+        }
+        .primary-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8 min-h-screen flex items-start justify-center">
+
+    <div id="app" class="w-full max-w-lg bg-white p-6 md:p-8 rounded-xl shadow-2xl space-y-6">
+
+        <!-- Título y Descripción -->
+        <header class="text-center space-y-2">
+            <h1 class="text-3xl font-bold text-gray-800">🛠️ Buscador de Piezas PRO</h1>
+            <p class="text-sm text-gray-500">Encuentra la pieza exacta y su mejor precio online.</p>
+        </header>
+
+        <!-- Formulario de Búsqueda -->
+        <section class="space-y-5">
+            <!-- Selector de Modelo -->
+            <div class="space-y-2">
+                <label for="car-model" class="block text-sm font-medium text-gray-700">Paso 1: Selecciona el Modelo de Coche</label>
+                <select id="car-model" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-red-500 focus:border-red-500 shadow-sm transition duration-150 ease-in-out bg-white text-gray-900">
+                    <option value="" disabled selected>Selecciona un modelo...</option>
+                </select>
+            </div>
+
+            <!-- Selector de Pieza -->
+            <div class="space-y-2">
+                <label for="car-part" class="block text-sm font-medium text-gray-700">Paso 2: Selecciona la Pieza a Buscar</label>
+                <select id="car-part" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-red-500 focus:border-red-500 shadow-sm transition duration-150 ease-in-out bg-gray-100 text-gray-500" disabled>
+                    <option value="" disabled selected>Selecciona un modelo primero...</option>
+                </select>
+            </div>
+
+            <!-- Botón de Búsqueda y Afiliación -->
+            <button id="search-button" class="primary-button w-full flex items-center justify-center p-3 text-lg font-semibold text-white bg-red-600 rounded-lg shadow-md hover:bg-red-700 disabled:bg-gray-400 disabled:cursor-not-allowed" disabled>
+                Buscar Mejor Precio en Amazon 🚀
+            </button>
+        </section>
+
+        <!-- Área de Resultados y Mensajes -->
+        <div id="message-area" class="text-center text-sm p-4 rounded-lg hidden">
+            <!-- Los mensajes se mostrarán aquí -->
+        </div>
+    </div>
+
+    <script>
+        // === ZONA DE CONFIGURACIÓN Y DATOS ===
+
+        // Importante: La base de datos de modelos y piezas
+        // En una aplicación real, esto vendría de una base de datos externa.
+        const CAR_DATABASE = {
+            "Toyota Corolla (2018-2023)": {
+                "Filtro de Aceite": "TOYOTACOROLLA-FILTROACEITE-REF123",
+                "Pastillas de Freno Delanteras": "TOYOTACOROLLA-FRENOS-REF456",
+                "Batería": "TOYOTACOROLLA-BATERIA-REF789"
+            },
+            "Volkswagen Golf VII (2012-2020)": {
+                "Bujías (Juego de 4)": "VWGOLF7-BUJIAS-REF111",
+                "Amortiguadores Traseros": "VWGOLF7-AMORTIGUADOR-REF222"
+            },
+            "Ford Focus (2019-Actual)": {
+                "Limpiaparabrisas (Juego)": "FORDFOCUS-LIMPIA-REF333"
+            }
+        };
+
+        // Tu ID de Afiliado de Amazon
+        // RECUERDA: Este es un placeholder. Debes usar tu propio Tag ID de Amazon Afiliados.
+        const AFFILIATE_TAG = "tuiddeafiliado-20"; 
+
+        // === ELEMENTOS DEL DOM ===
+        const modelSelect = document.getElementById('car-model');
+        const partSelect = document.getElementById('car-part');
+        const searchButton = document.getElementById('search-button');
+        const messageArea = document.getElementById('message-area');
+
+        // === FUNCIONES PRINCIPALES ===
+
+        /**
+         * Inicializa los selectores con los datos de la base de datos.
+         */
+        function initializeSelectors() {
+            // Rellenar el selector de Modelos
+            Object.keys(CAR_DATABASE).forEach(model => {
+                const option = document.createElement('option');
+                option.value = model;
+                option.textContent = model;
+                modelSelect.appendChild(option);
+            });
+        }
+
+        /**
+         * Maneja el cambio del modelo de coche seleccionado.
+         * Rellena el selector de piezas basado en el modelo elegido.
+         */
+        function handleModelChange() {
+            const selectedModel = modelSelect.value;
+            
+            // Limpiar y resetear el selector de piezas
+            partSelect.innerHTML = '<option value="" disabled selected>Selecciona la pieza...</option>';
+            partSelect.disabled = true;
+            searchButton.disabled = true;
+            showMessage(false);
+
+            if (selectedModel) {
+                const parts = CAR_DATABASE[selectedModel];
+                
+                // Rellenar el selector de Piezas
+                Object.keys(parts).forEach(partName => {
+                    const option = document.createElement('option');
+                    option.value = parts[partName]; // Usamos la referencia como valor
+                    option.textContent = partName;
+                    partSelect.appendChild(option);
+                });
+
+                // Habilitar el selector de piezas
+                partSelect.disabled = false;
+                partSelect.classList.remove('bg-gray-100', 'text-gray-500');
+                partSelect.classList.add('bg-white', 'text-gray-900');
+            }
+        }
+
+        /**
+         * Maneja el cambio de la pieza seleccionada.
+         * Habilita/Deshabilita el botón de búsqueda.
+         */
+        function handlePartChange() {
+            const selectedPart = partSelect.value;
+            // Habilitar el botón solo si tanto el modelo como la pieza están seleccionados
+            searchButton.disabled = !(modelSelect.value && selectedPart);
+            showMessage(false);
+        }
+        
+        /**
+         * Muestra o esconde mensajes de usuario.
+         * @param {boolean} show - Si se debe mostrar el mensaje.
+         * @param {string} text - El contenido del mensaje.
+         * @param {string} type - 'success' o 'error' para estilos.
+         */
+        function showMessage(show, text = '', type = 'info') {
+            messageArea.innerHTML = text;
+            if (show) {
+                messageArea.classList.remove('hidden', 'bg-red-100', 'bg-green-100', 'text-red-700', 'text-green-700');
+                if (type === 'error') {
+                    messageArea.classList.add('bg-red-100', 'text-red-700');
+                } else if (type === 'success') {
+                    messageArea.classList.add('bg-green-100', 'text-green-700');
+                } else {
+                    messageArea.classList.add('bg-blue-100', 'text-blue-700');
+                }
+            } else {
+                messageArea.classList.add('hidden');
+            }
+        }
+
+        /**
+         * Construye el enlace de afiliado y redirecciona.
+         * ESTA ES LA FUNCIÓN CLAVE PARA TU NEGOCIO.
+         */
+        function redirectToAmazon() {
+            const productReference = partSelect.value; // La referencia única de la pieza
+
+            if (!productReference) {
+                showMessage(true, 'Error: Selecciona el modelo y la pieza antes de buscar.', 'error');
+                return;
+            }
+
+            // En un caso real, la referencia de la pieza (productReference)
+            // se usaría para buscar el ASIN (código de producto de Amazon)
+            // y construir la URL.
+            // Para esta demostración, simularemos la búsqueda por texto.
+
+            const selectedModelText = modelSelect.options[modelSelect.selectedIndex].text;
+            const selectedPartText = partSelect.options[partSelect.selectedIndex].text;
+            
+            // Construye la frase de búsqueda
+            const searchQuery = `${selectedPartText} ${selectedModelText}`;
+            
+            // Construye el enlace de búsqueda de Amazon con tu Tag de Afiliado
+            const amazonUrl = `https://www.amazon.es/s?k=${encodeURIComponent(searchQuery)}&tag=${AFFILIATE_TAG}`;
+
+            // 1. Muestra un mensaje al usuario antes de redirigir (UX)
+            showMessage(true, `Redireccionando a Amazon para buscar: "${searchQuery}"...`, 'success');
+            
+            // 2. Redirecciona al usuario
+            // Utiliza un pequeño retraso para que el usuario pueda leer el mensaje
+            setTimeout(() => {
+                window.open(amazonUrl, '_blank');
+                // IMPORTANTE: En el entorno real de una app, puedes usar window.location.href = amazonUrl;
+                // Usamos window.open para evitar problemas de navegación en este entorno de demo.
+                
+                // Mensaje post-redirección (opcional)
+                showMessage(true, '¡Redirección completada! Revisa la nueva pestaña o ventana.', 'info');
+            }, 800); 
+
+            console.log("URL generada con afiliado:", amazonUrl);
+        }
+
+
+        // === LISTENERS Y EJECUCIÓN INICIAL ===
+
+        // Event Listeners
+        modelSelect.addEventListener('change', handleModelChange);
+        partSelect.addEventListener('change', handlePartChange);
+        searchButton.addEventListener('click', redirectToAmazon);
+
+        // Inicializar la aplicación al cargar
+        document.addEventListener('DOMContentLoaded', initializeSelectors);
+
+        // Mensaje de inicio para el usuario
+        showMessage(true, 'Bienvenido. Por favor, selecciona el modelo y la pieza para empezar.', 'info');
+
+    </script>
+</body>
+</html>
